@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="es"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Betaoxidación en la mitocondria</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Schibsted+Grotesk:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#F2F5F8;--panel:#fff;--ink:#14263A;--mut:#5B6B7C;--line:#C9D3DD;--c:#F0B429;--fad:#0F7F7A;--nad:#C2306A;--enz:#2A55C0;--ac:#6A3FC4;--on:#fff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0C1824;--panel:#122434;--ink:#E8EEF4;--mut:#93A4B5;--line:#2B4155;--c:#F2B83B;--fad:#4FD1C5;--nad:#FF7FAA;--enz:#7FA8FF;--ac:#B79CFF;--on:#08141F}}
+:root[data-theme="dark"]{--bg:#0C1824;--panel:#122434;--ink:#E8EEF4;--mut:#93A4B5;--line:#2B4155;--c:#F2B83B;--fad:#4FD1C5;--nad:#FF7FAA;--enz:#7FA8FF;--ac:#B79CFF;--on:#08141F}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 "Schibsted Grotesk",system-ui,sans-serif}
+main{max-width:860px;margin:0 auto;padding:16px}
+h1{font-size:clamp(22px,4.5vw,30px);font-weight:800;margin:4px 0 12px;letter-spacing:-.01em}
+.stage{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:6px}
+svg{display:block;width:100%;height:auto}
+.cap{min-height:128px;padding:14px 4px 4px}
+.cap h2{font-size:clamp(18px,3.4vw,22px);margin:0 0 4px;font-weight:800}
+.cap p{margin:0;max-width:68ch;min-height:4.5em}
+.cap a{color:var(--enz);font-weight:600;margin-right:6px}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:8px 0}
+button{font:inherit;font-weight:600;color:var(--ink);background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 14px;min-height:40px;cursor:pointer}
+button:hover{border-color:var(--enz)}
+button:focus-visible{outline:3px solid var(--enz);outline-offset:2px}
+.dots{display:flex;gap:2px;margin-left:auto}
+.dots button{width:32px;min-height:32px;height:32px;padding:0;border:0;background:none;display:grid;place-items:center}
+.dots i{width:12px;height:12px;border-radius:50%;background:var(--line);transition:.3s}
+.dots button[aria-current="true"] i{background:var(--enz);transform:scale(1.35)}
+footer{margin-top:18px;font-size:14px;color:var(--mut)}
+footer ol{padding-left:20px;margin:6px 0}
+footer a{color:var(--enz)}
+.lb{font-size:20px;fill:var(--ink);font-weight:600}.sm{font-size:15px;fill:var(--mut)}.mid{text-anchor:middle}
+.bond{stroke:var(--ink);stroke-width:3;stroke-linecap:round;stroke-linejoin:round;fill:none}
+.car{fill:var(--c)}.ct{font-size:16px;font-weight:700;fill:#14263A;text-anchor:middle;dominant-baseline:central}
+.ct2{font-size:17px;font-weight:700;fill:#14263A;text-anchor:middle}
+.chipt{fill:var(--on);font-size:19px;font-weight:600;text-anchor:middle}
+.f{fill:var(--fad)}.n{fill:var(--nad)}.e{fill:var(--enz)}.a{fill:var(--ac)}.w{fill:var(--mut)}
+.out{fill:none;stroke:var(--line);stroke-width:2}
+.mem{fill:var(--line)}
+.ar{stroke:var(--mut);stroke-width:3;fill:none;marker-end:url(#m)}
+.red{stroke:var(--nad)}
+.sc{opacity:0;transition:opacity .4s;pointer-events:none}.sc.on{opacity:1}
+.sc .p{opacity:0}.sc.on .p{animation:pop .6s var(--d,0s) both}
+@keyframes pop{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.drift{animation:drift 3.2s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(110px,-80px)}}
+.u,.c0{fill:var(--c)}
+.sc.on .u{animation:lift .6s calc(var(--i)*.55s + .6s) both}
+@keyframes lift{0%{fill:var(--c)}40%{transform:translateY(-14px)}100%{fill:var(--ac);transform:none}}
+.k{opacity:0;transition:opacity .5s}
+svg[data-s="3"] .k3,svg[data-s="4"] .k4,svg[data-s="5"] .k5,svg[data-s="6"] .k6{opacity:1}
+.dbl,.oh,.ke,.nt,.al{opacity:0;transition:opacity .6s}
+svg[data-s="3"] .dbl,svg[data-s="4"] .oh,svg:is([data-s="5"],[data-s="6"]) .ke,svg[data-s="6"] .nt,svg[data-s="6"] .al{opacity:1}
+#acet,#rest{transition:transform 1.3s ease .4s}
+svg[data-s="6"] #acet{transform:translateY(-90px)}
+svg[data-s="6"] #rest{transform:translateX(-160px)}
+#mid{transition:opacity .5s}svg[data-s="6"] #mid{opacity:0}
+.hl{fill:none;stroke:var(--enz);stroke-width:3;stroke-dasharray:7 6;opacity:0;transition:transform .6s,opacity .5s}
+svg[data-s="3"] .hl{opacity:1;transform:translate(260px,210px)}
+svg[data-s="4"] .hl{opacity:1;transform:translate(300px,250px)}
+svg[data-s="5"] .hl{opacity:1;transform:translate(300px,250px)}
+svg[data-s="6"] .hl{opacity:1;transform:translate(260px,210px)}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-delay:0s!important;transition-duration:.01s!important;transition-delay:0s!important}.drift{animation:none}}
+#gate{position:fixed;inset:0;z-index:20;background:rgba(8,20,31,.72);display:grid;place-items:center;padding:16px}
+#gate[hidden]{display:none}
+#gate div{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px;max-width:380px;text-align:center}
+#gate p{margin:0 0 14px}
+#gate button{display:block;width:100%;margin-top:8px;background:var(--enz);color:#fff;border-color:var(--enz)}
+#gate button.alt{background:none;color:var(--ink);border-color:var(--line)}
+</style></head>
+<body><main>
+<h1>Betaoxidación en la mitocondria</h1>
+<div class="stage">
+<svg id="svg" viewBox="0 0 640 400" role="img" aria-label="Animación de la betaoxidación" data-s="0">
+<defs><marker id="m" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" style="fill:var(--mut)"/></marker></defs>
+
+<g class="sc" id="g0">
+<g class="p" style="--d:.1s"><rect class="out" x="20" y="20" width="130" height="38" rx="19"/><text class="lb mid" x="85" y="46">Músculo</text></g>
+<g class="p" style="--d:.3s"><rect class="out" x="175" y="20" width="130" height="38" rx="19"/><text class="lb mid" x="240" y="46">Corazón</text></g>
+<g class="p" style="--d:.5s"><rect class="out" x="330" y="20" width="130" height="38" rx="19"/><text class="lb mid" x="395" y="46">Riñón</text></g>
+<g class="p" style="--d:.7s"><rect class="out" x="485" y="20" width="130" height="38" rx="19"/><text class="lb mid" x="550" y="46">Hígado</text></g>
+<g class="p" style="--d:1s"><ellipse cx="340" cy="225" rx="230" ry="110" fill="none" style="stroke:var(--ink)" stroke-width="4"/>
+<ellipse cx="340" cy="225" rx="205" ry="88" fill="none" style="stroke:var(--mut)" stroke-width="2" stroke-dasharray="6 5"/>
+<path d="M255 150v45M340 140v50M425 150v45" fill="none" style="stroke:var(--mut)" stroke-width="3" stroke-linecap="round"/>
+<text class="lb mid" x="340" y="250">Matriz mitocondrial</text><text class="sm mid" x="340" y="276">aquí ocurren las 4 reacciones</text></g>
+<g class="p" style="--d:1.6s"><g class="drift"><polyline class="bond zz" data-x="30" data-y="330" data-n="6"/><text class="sm" x="30" y="372">Ácido graso</text></g></g>
+<text class="sm" x="620" y="388" text-anchor="end">Peroxisomas y retículo endoplásmico: solo se nombran</text>
+</g>
+
+<g class="sc" id="g1">
+<g class="p" style="--d:.2s"><polyline class="bond zz" data-x="30" data-y="235" data-n="5"/><text class="lb" x="30" y="285">Ácido graso</text></g>
+<g class="p" style="--d:.6s"><rect class="w" x="170" y="70" width="100" height="40" rx="20"/><text class="chipt" x="220" y="96">ATP</text>
+<rect class="f" x="160" y="320" width="120" height="40" rx="20"/><text class="chipt" x="220" y="346">CoA-SH</text>
+<path class="ar" d="M235 114L300 165"/><path class="ar" d="M235 316L300 265"/><path class="ar" d="M150 235H262"/></g>
+<g class="p" style="--d:1s"><ellipse class="e" cx="360" cy="215" rx="95" ry="62"/><text class="chipt" x="360" y="212">Acil-CoA</text><text class="chipt" x="360" y="236">sintetasa</text></g>
+<path class="ar p" style="--d:1.6s" d="M458 215H490"/>
+<g class="p" style="--d:2s"><polyline class="bond zz" data-x="500" data-y="215" data-n="4"/><rect class="f" x="520" y="250" width="90" height="34" rx="17"/><text class="chipt" x="565" y="274">S–CoA</text><text class="lb" x="500" y="170">Acil-CoA</text></g>
+</g>
+
+<g class="sc" id="g2">
+<rect class="mem" x="40" y="120" width="560" height="14" rx="7"/><rect class="mem" x="40" y="250" width="560" height="14" rx="7"/>
+<text class="sm" x="44" y="108">Citosol</text><text class="sm" x="44" y="198">Espacio intermembrana</text><text class="sm" x="44" y="296">Matriz</text>
+<g class="p" style="--d:.2s"><rect class="n" x="395" y="104" width="80" height="46" rx="8"/><text class="chipt" x="435" y="134">CPT I</text></g>
+<g class="p" style="--d:.2s"><rect class="n" x="470" y="236" width="90" height="46" rx="8" style="opacity:0"/></g>
+<g class="p" style="--d:1.4s"><rect class="n" x="300" y="234" width="90" height="46" rx="8"/><text class="chipt" x="345" y="264">CACT</text></g>
+<g class="p" style="--d:2.6s"><rect class="n" x="450" y="234" width="100" height="46" rx="8"/><text class="chipt" x="500" y="264">CPT II</text></g>
+<g class="p" style="--d:.4s"><rect class="f" x="355" y="50" width="160" height="38" rx="19"/><text class="chipt" x="435" y="76">acil-CoA</text><path class="ar" d="M435 90V102"/></g>
+<g class="p" style="--d:.9s"><rect class="a" x="75" y="160" width="0" height="0"/><rect class="a" x="355" y="158" width="160" height="38" rx="19"/><text class="chipt" x="435" y="184">acilcarnitina</text><path class="ar" d="M435 152V156"/></g>
+<g class="p" style="--d:1.9s"><path class="ar" d="M395 200L355 230"/><rect class="a" x="270" y="296" width="170" height="38" rx="19"/><text class="chipt" x="355" y="322">acilcarnitina</text><path class="ar" d="M348 284V294"/></g>
+<g class="p" style="--d:3.1s"><path class="ar" d="M444 318L480 288"/><rect class="f" x="470" y="326" width="140" height="38" rx="19"/><text class="chipt" x="540" y="352">acil-CoA</text></g>
+</g>
+
+<g class="sc" id="g3">
+<ellipse class="hl" rx="64" ry="48"/>
+<g id="acet"><text class="lb mid al" x="130" y="275" style="fill:var(--ac)">Acetil-CoA</text>
+<text class="sm mid" x="68" y="236">S–CoA</text><path class="bond" d="M100 230H123M140 213V186M146 213V186M158 222L206 198"/>
+<circle class="car" cx="140" cy="230" r="17"/><text class="ct" x="140" y="230">C</text><text class="sm mid" x="140" y="172">O</text>
+<circle class="car" cx="220" cy="190" r="17"/><text class="ct" x="220" y="190">C</text><text class="sm mid" x="204" y="160">α</text></g>
+<g id="mid"><path class="bond" d="M234 198L286 222"/><path class="bond dbl" d="M230 205L282 229"/></g>
+<g id="rest">
+<text class="sm mid nt" x="220" y="236">S–CoA</text><path class="bond nt" d="M246 230H283"/>
+<path class="bond" d="M314 222L366 198M394 198L446 222"/>
+<circle class="car" cx="300" cy="230" r="17"/><text class="ct" x="300" y="230">C</text><text class="sm" x="334" y="252">β</text>
+<circle class="car" cx="380" cy="190" r="17"/><text class="ct" x="380" y="190">C</text>
+<circle class="car" cx="460" cy="230" r="17"/><text class="ct" x="460" y="230">C</text><text class="lb" x="500" y="240">···</text>
+<g class="oh"><path class="bond" d="M300 248V268"/><text class="lb mid" x="300" y="292">OH</text></g>
+<g class="ke"><path class="bond" d="M296 248V268M304 248V268"/><text class="lb mid" x="300" y="292">O</text></g>
+</g>
+<g class="k k3"><rect class="f" x="190" y="26" width="260" height="42" rx="21"/><text class="chipt" x="320" y="54">FAD → FADH₂</text></g>
+<g class="k k4"><rect class="w" x="190" y="26" width="260" height="42" rx="21"/><text class="chipt" x="320" y="54">+ H₂O</text></g>
+<g class="k k5"><rect class="n" x="190" y="26" width="260" height="42" rx="21"/><text class="chipt" x="320" y="54">NAD⁺ → NADH</text></g>
+<g class="k k6"><rect class="f" x="190" y="26" width="260" height="42" rx="21"/><text class="chipt" x="320" y="54">+ CoA-SH</text></g>
+<g class="k k3"><rect class="e" x="120" y="330" width="400" height="44" rx="10"/><text class="chipt" x="320" y="359">Acil-CoA deshidrogenasa</text></g>
+<g class="k k4"><rect class="e" x="120" y="330" width="400" height="44" rx="10"/><text class="chipt" x="320" y="359">Enoil-CoA hidratasa</text></g>
+<g class="k k5"><rect class="e" x="120" y="330" width="400" height="44" rx="10"/><text class="chipt" x="320" y="359">3-hidroxiacil-CoA deshidrogenasa</text></g>
+<g class="k k6"><rect class="e" x="120" y="330" width="400" height="44" rx="10"/><text class="chipt" x="320" y="359">Tiolasa (β-cetoacil-CoA tiolasa)</text></g>
+</g>
+
+<g class="sc" id="g4">
+<text id="l1" class="lb mid p" style="--d:.1s" x="320" y="130">Palmitoil-CoA: 16 carbonos</text>
+<g id="blk"></g>
+<text id="l2" class="lb mid p" style="--d:.3s" x="320" y="275">7 vueltas → 8 acetil-CoA</text>
+<text id="l3" class="sm mid p" style="--d:.3s" x="320" y="305">cálculo: cada vuelta retira 2 carbonos</text>
+</g>
+
+<g class="sc" id="g5">
+<g class="p" style="--d:.1s"><rect class="a" x="240" y="28" width="160" height="44" rx="12"/><text class="chipt" x="320" y="58">Acetil-CoA</text></g>
+<g class="p" style="--d:.7s"><path class="ar" d="M290 76L200 126"/><path class="ar" d="M350 76L440 126"/>
+<rect class="out" x="80" y="130" width="240" height="72" rx="12"/><text class="lb mid" x="200" y="162">Ciclo de Krebs</text><text class="sm mid" x="200" y="188">músculo, corazón, riñón</text>
+<rect class="out" x="330" y="130" width="240" height="72" rx="12"/><text class="lb mid" x="450" y="162">Cetogénesis</text><text class="sm mid" x="450" y="188">hígado, en ayuno</text></g>
+<g class="p" style="--d:1.6s"><text class="sm mid" x="320" y="248">De cada vuelta también salen:</text>
+<rect class="out" x="60" y="260" width="520" height="92" rx="12"/><text class="lb mid" x="320" y="298">FADH₂ ≈ 1,5 ATP  ·  NADH ≈ 2,5 ATP</text><text class="sm mid" x="320" y="328">entregan electrones a la cadena de transporte</text></g>
+</g>
+<g class="sc" id="g6">
+<g class="p" style="--d:.1s"><rect class="out" x="14" y="14" width="298" height="170" rx="14"/><circle class="f" cx="40" cy="44" r="10"/><text class="lb" x="58" y="51">Corta</text><text class="sm" x="30" y="84">menos de 6 carbonos</text><text class="lb" x="30" y="124">Butirato · 4 C</text><text class="sm" x="30" y="156">1 vuelta del ciclo</text></g>
+<g class="p" style="--d:.6s"><rect class="out" x="328" y="14" width="298" height="170" rx="14"/><circle class="e" cx="354" cy="44" r="10"/><text class="lb" x="372" y="51">Media</text><text class="sm" x="344" y="84">de 6 a 12 carbonos</text><text class="lb" x="344" y="124">Octanoato · 8 C</text><text class="sm" x="344" y="156">3 vueltas</text></g>
+<g class="p" style="--d:1.1s"><rect class="out" x="14" y="206" width="298" height="170" rx="14"/><circle class="car" cx="40" cy="236" r="10"/><text class="lb" x="58" y="243">Larga</text><text class="sm" x="30" y="276">de 12 a 20 carbonos</text><text class="lb" x="30" y="316">Palmitato · 16 C</text><text class="sm" x="30" y="348">7 vueltas</text></g>
+<g class="p" style="--d:1.6s"><rect class="out" x="328" y="206" width="298" height="170" rx="14"/><circle class="a" cx="354" cy="236" r="10"/><text class="lb" x="372" y="243">Muy larga</text><text class="sm" x="344" y="276">más de 20 carbonos</text><text class="lb" x="344" y="316">24 a 26 C</text><text class="sm" x="344" y="348">empieza en el peroxisoma</text></g>
+</g>
+<g class="sc" id="g7">
+<g class="p" style="--d:.1s"><rect class="out" x="14" y="50" width="270" height="190" rx="14"/><text class="lb" x="30" y="84">Peroxisoma</text><text class="sm" x="30" y="108">acorta la cadena (24 C)</text></g>
+<g id="pb"></g>
+<g class="p" style="--d:6.2s"><path class="ar" d="M290 170H350"/><text class="sm mid" x="320" y="156">carnitina</text><rect class="out" x="356" y="50" width="270" height="190" rx="14"/><text class="lb" x="372" y="84">Mitocondria</text><text class="sm" x="372" y="108">termina la oxidación (6 a 8 C)</text><rect class="c0" x="399" y="150" width="56" height="40" rx="8"/><rect class="c0" x="463" y="150" width="56" height="40" rx="8"/><rect class="c0" x="527" y="150" width="56" height="40" rx="8"/></g>
+<text class="lb mid p" style="--d:.4s" x="320" y="300">24 C → peroxisoma → 6 C → mitocondria</text>
+<text class="sm mid p" style="--d:.4s" x="320" y="330">ejemplo de cálculo: 24 C − 9 vueltas × 2 C = 6 C restantes</text>
+</g>
+</svg></div>
+
+<div class="cap"><h2 id="ttl"></h2><p aria-hidden="true"><span id="txt"></span> <span id="refs"></span></p><span class="sr" id="sr" aria-live="polite"></span></div>
+<div class="ctl"><button id="prev">Anterior</button><button id="pp">Pausar</button><button id="next">Siguiente</button><button id="vz">Voz: sí</button><nav class="dots" id="dots" aria-label="Pasos"></nav></div>
+
+<footer>Fuentes (se abren en una pestaña nueva):
+<ol>
+<li><a href="https://www.ncbi.nlm.nih.gov/books/NBK556002/" target="_blank" rel="noopener">Talley y Mohiuddin. Biochemistry, Fatty Acid Oxidation. StatPearls.</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/26474213" target="_blank" rel="noopener">Houten et al. Annu Rev Physiol 2016;78:23-44.</a></li>
+<li><a href="https://pubmed.ncbi.nlm.nih.gov/20195903/" target="_blank" rel="noopener">Houten y Wanders. J Inherit Metab Dis 2010;33:469-477.</a></li>
+<li><a href="https://library.med.utah.edu/NetBiochem/FattyAcids/9_2.html" target="_blank" rel="noopener">Baggott. NetBiochem, Fatty Acids IX. Universidad de Utah.</a></li>
+<li><a href="https://pmc.ncbi.nlm.nih.gov/articles/PMC2557099" target="_blank" rel="noopener">Longo et al. Am J Med Genet C 2006;142C:77-85.</a></li>
+</ol></footer>
+</main>
+<div id="gate" hidden role="dialog" aria-label="Activar narración"><div><p><b>Toca para escuchar la narración</b><br>El navegador pide un toque para activar la voz. La presentación seguirá sola hasta el final.</p><button id="gOn">🔊 Activar voz y comenzar</button><button id="gOff" class="alt">Continuar sin voz</button></div></div>
+<script>
+const R={1:"https://www.ncbi.nlm.nih.gov/books/NBK556002/",2:"https://pubmed.ncbi.nlm.nih.gov/26474213",3:"https://pubmed.ncbi.nlm.nih.gov/20195903/",4:"https://library.med.utah.edu/NetBiochem/FattyAcids/9_2.html",5:"https://pmc.ncbi.nlm.nih.gov/articles/PMC2557099"};
+const S=[
+["¿Dónde ocurre?","Las grasas se queman sobre todo en músculo, corazón y riñón; en el hígado alimentan la cetogénesis. Todo sucede en la matriz de la mitocondria.",[1,2],3800],
+["Activación","El ácido graso se une a la coenzima A. La acil-CoA sintetasa lo hace gastando ATP y forma acil-CoA.",[1],4200],
+["Entrada con carnitina","CPT I lo convierte en acilcarnitina (paso limitante, que frena el malonil-CoA). La translocasa lo pasa a la matriz y CPT II lo devuelve a acil-CoA.",[1,5],6500],
+["Reacción 1: deshidrogenación","La acil-CoA deshidrogenasa forma un doble enlace trans entre C2 (α) y C3 (β). El FAD se reduce a FADH₂.",[1,4],3800],
+["Reacción 2: hidratación","La enoil-CoA hidratasa agrega agua al doble enlace y deja un OH en el carbono β. No produce energía.",[1,4],3800],
+["Reacción 3: segunda deshidrogenación","La 3-hidroxiacil-CoA deshidrogenasa oxida el carbono β. El NAD⁺ se reduce a NADH.",[1,4],3800],
+["Reacción 4: tiólisis","La tiolasa rompe el enlace entre C2 y C3 con otra CoA. Sale acetil-CoA y queda un acil-CoA con 2 carbonos menos.",[1,4],5000],
+["Cuatro tamaños de cadena","El ciclo se repite hasta convertir toda la cadena en acetil-CoA, así que el tamaño decide cuántas vueltas da. Se agrupan en corta, media, larga y muy larga; los límites exactos varían según el autor.",[1],6500],
+["Cadena corta: butirato (4 carbonos)","El butirato tiene solo 4 carbonos, así que da 1 vuelta y 2 acetil-CoA. En la reacción 1 actúa la forma de cadena corta de la enzima, la SCAD.",[1],5000,{n:4,a:"Butirato: 4 carbonos",b:"1 vuelta → 2 acetil-CoA",c:"1 FADH₂ y 1 NADH en total (cálculo)"}],
+["Cadena media: octanoato (8 carbonos)","El octanoato tiene 8 carbonos: da 3 vueltas y 4 acetil-CoA. Se activa dentro de la matriz, sin la lanzadera de carnitina de las cadenas largas. Aquí actúa la MCAD, cuyo déficit es el defecto hereditario más común de esta vía.",[1],6500,{n:8,a:"Octanoato: 8 carbonos",b:"3 vueltas → 4 acetil-CoA",c:"3 FADH₂ y 3 NADH en total (cálculo)"}],
+["Cadena larga: palmitato (16 carbonos)","El palmitato, de 16 carbonos, es el ejemplo clásico; unido a la CoA se llama palmitoil-CoA. Entra a la matriz con la lanzadera de carnitina. Da 7 vueltas y 8 acetil-CoA.",[1],6500,{n:16,a:"Palmitoil-CoA: 16 carbonos",b:"7 vueltas → 8 acetil-CoA",c:"7 FADH₂ y 7 NADH en total (cálculo)"}],
+["Cadena muy larga: 24 a 26 carbonos","Estas grasas se oxidan primero en el peroxisoma, que las acorta sin usar carnitina para entrar. Cuando quedan 6 a 8 carbonos, pasan a la mitocondria con carnitina y terminan su oxidación allí.",[1],8500],
+["¿A dónde va todo?","El acetil-CoA entra al ciclo de Krebs o a la cetogénesis. El FADH₂ y el NADH aportan electrones a la cadena de transporte de electrones.",[1],5000]];
+const G=[0,1,2,3,3,3,3,6,4,4,4,7,5];
+const $=id=>document.getElementById(id),svg=$("svg"),reduce=matchMedia("(prefers-reduced-motion:reduce)").matches;
+document.querySelectorAll(".zz").forEach(e=>{let x=+e.dataset.x,y=+e.dataset.y,n=+e.dataset.n,p=[];for(let k=0;k<n;k++)p.push((x+k*28)+","+(y+(k%2?-20:0)));e.setAttribute("points",p.join(" "))});
+let h="";for(let k=0;k<8;k++)h+=`<g><rect class="u" style="--i:${k}" x="${64+k*64}" y="160" width="56" height="48" rx="8"/><text class="ct2" x="${92+k*64}" y="190" style="fill:#14263A">2 C</text></g>`;
+$("blk").innerHTML=h;let q2="";for(let j=0;j<12;j++)q2+=`<rect class="${j<9?"u":"c0"}" style="--i:${j}" x="${31+j*20}" y="150" width="15" height="40" rx="3"/>`;$("pb").innerHTML=q2;
+function draw(o){let k=o.n/2,x0=320-(k*64-8)/2,h="";for(let j=0;j<k;j++)h+=`<g><rect class="u" style="--i:${j}" x="${x0+j*64}" y="160" width="56" height="48" rx="8"/><text class="ct2" x="${x0+j*64+28}" y="190">2 C</text></g>`;$("blk").innerHTML=h;$("l1").textContent=o.a;$("l2").textContent=o.b;$("l3").textContent=o.c}
+const dots=$("dots");S.forEach((s,k)=>{const b=document.createElement("button");b.setAttribute("aria-label","Paso "+(k+1)+": "+s[0]);b.innerHTML="<i></i>";b.onclick=()=>go(k);dots.appendChild(b)});
+let i=0,playing=true,tm,ty,gid=0,voiceOn=true,V=null;
+function pick(){const v=speechSynthesis.getVoices().filter(x=>/^es/i.test(x.lang));const f=/female|mujer|sabina|helena|laura|paulina|monica|mónica|elena|lucia|lucía|dalia|elvira|camila|salome|salomé|paloma|google español/i;V=v.find(x=>f.test(x.name)&&/es-(US|MX|419|CO|AR|BO)/i.test(x.lang))||v.find(x=>f.test(x.name))||v[0]||null}
+if(window.speechSynthesis){speechSynthesis.onvoiceschanged=pick;pick()}
+function nar(t){return t.replace(/FADH₂/g,"F A D H dos").replace(/NADH/g,"N A D H").replace(/NAD⁺/g,"N A D más").replace(/FAD/g,"F A D").replace(/H₂O/g,"agua").replace(/CPT II/g,"C P T dos").replace(/CPT I/g,"C P T uno").replace(/ATP/g,"A T P").replace(/C2 \(α\)/g,"carbono 2, alfa,").replace(/C3 \(β\)/g,"carbono 3, beta").replace(/C2/g,"carbono 2").replace(/C3/g,"carbono 3").replace(/β/g,"beta").replace(/α/g,"alfa").replace(/CoA/g,"coa").replace(/([SM])CAD/g,"$1 C A D")}
+function chunks(t){return(t.match(/[^.;:]+[.;:]?/g)||[t]).map(x=>x.trim()).filter(Boolean)}
+function showGate(){$("gate").hidden=false;$("gOn").focus()}
+function say(s,cb,tok){const sy=speechSynthesis;sy.cancel();pick();
+const parts=chunks(nar(s[0]+". "+s[1]));let k=0,started=false,fin=false,wd,lim;
+const finish=()=>{if(fin)return;fin=true;clearTimeout(wd);clearTimeout(lim);cb()};
+wd=setTimeout(()=>{if(!started&&!fin&&tok==gid){fin=true;clearTimeout(lim);sy.cancel();showGate()}},3000);
+lim=setTimeout(finish,parts.join(" ").length*110+6000);
+const next=()=>{if(tok!=gid||fin)return;if(k>=parts.length){finish();return}
+const u=new SpeechSynthesisUtterance(parts[k++]);if(V)u.voice=V;u.lang=V?V.lang:"es-ES";u.rate=.95;u.pitch=1.1;
+u.onstart=()=>{started=true};u.onend=next;
+u.onerror=e=>{if(tok!=gid||fin)return;if(e.error==="not-allowed"){fin=true;clearTimeout(wd);clearTimeout(lim);showGate()}else if(e.error!=="canceled"&&e.error!=="interrupted")next()};
+sy.speak(u)};
+setTimeout(next,80)}
+function go(n,q){clearTimeout(tm);clearInterval(ty);const tok=++gid;const prev=i;i=n;const s=S[n];svg.dataset.s=n;
+document.querySelectorAll(".sc").forEach((e,k)=>{if(k==G[n]){if(!e.classList.contains("on")){void e.getBoundingClientRect();e.classList.add("on")}}else e.classList.remove("on")});
+if(G[n]==4)draw(s[4]);[...dots.children].forEach((b,k)=>b.setAttribute("aria-current",k==n));
+$("ttl").textContent=s[0];$("sr").textContent=s[0]+". "+s[1];$("refs").innerHTML="";
+let typed=false,spoke=!(voiceOn&&!q&&window.speechSynthesis);const adv=()=>{if(typed&&spoke&&playing&&tok==gid){if(n<S.length-1)tm=setTimeout(()=>go(n+1),Math.min(s[3],2500));else{playing=false;upd();if(parent!==window)parent.postMessage({lbVideo:"end"},"*")}}};if(!spoke)say(s,()=>{spoke=true;adv()},tok);else if(window.speechSynthesis)speechSynthesis.cancel();const done=()=>{$("refs").innerHTML=s[2].map(r=>`<a href="${R[r]}" target="_blank" rel="noopener">[${r}]</a>`).join("");typed=true;adv()};
+if(reduce){$("txt").textContent=s[1];done()}else{let k=0;$("txt").textContent="";ty=setInterval(()=>{$("txt").textContent=s[1].slice(0,++k);if(k>=s[1].length){clearInterval(ty);done()}},voiceOn&&!q?58:20)}
+upd()}
+function upd(){$("pp").textContent=playing?"Pausar":(i==S.length-1?"Repetir":"Reproducir");$("prev").disabled=i==0;$("next").disabled=i==S.length-1}
+$("prev").onclick=()=>go(i-1);$("next").onclick=()=>go(i+1);
+$("pp").onclick=()=>{if(playing){playing=false;clearTimeout(tm);window.speechSynthesis&&speechSynthesis.cancel();upd()}else{playing=true;go(i==S.length-1?0:i)}};
+addEventListener("keydown",e=>{if(e.key=="ArrowRight"&&i<S.length-1)go(i+1);if(e.key=="ArrowLeft"&&i>0)go(i-1);if(e.key=="Escape"&&parent!==window)parent.postMessage({lbVideo:"skip"},"*")});
+$("vz").onclick=()=>{voiceOn=!voiceOn;$("vz").textContent=voiceOn?"Voz: sí":"Voz: no";if(!voiceOn&&window.speechSynthesis)speechSynthesis.cancel();go(i)};
+$("gOn").onclick=()=>{$("gate").hidden=true;playing=true;go(i)};
+$("gOff").onclick=()=>{$("gate").hidden=true;voiceOn=false;$("vz").textContent="Voz: no";playing=true;go(i)};
+addEventListener("message",e=>{const d=e.data;if(d&&d.lbVideo==="stop"){playing=false;gid++;clearTimeout(tm);clearInterval(ty);window.speechSynthesis&&speechSynthesis.cancel()}});
+addEventListener("pagehide",()=>{window.speechSynthesis&&speechSynthesis.cancel()});
+if(parent!==window)parent.postMessage({lbVideo:"ready"},"*");
+playing=true;go(0);
+</script></body></html>
